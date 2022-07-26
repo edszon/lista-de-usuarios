@@ -1,35 +1,73 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import reactLogo from './assets/react.svg'
 import './App.css'
-import { Button, TextField } from '@mui/material';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/List';
+import ListItemText from '@mui/material/ListItemText';
+import axios from 'axios';
+import cheerio from 'cheerio'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [users, setUsers] = useState([])
+
+  useEffect(() => 
+    {
+      fetch('https://jsonplaceholder.typicode.com/users/')
+      .then(response => response.json())
+      .then(res => setUsers (res)) 
+    }, [])
 
   return (
-    <div className="App">
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src="/vite.svg" className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+    <div>
+      <h1>lista de usuarios</h1>
+      <List>
+        {
+        users.map((user: any) => (
+          <ListItem key={user.id}>
+            <ListItemText primary={user.username} />
+          </ListItem>))
+        }
+
+      </List>
     </div>
   )
 }
 
 export default App
+
+
+// function App() {
+//   const [titulos, setTitulos] = useState([])
+
+//   useEffect(() => 
+//     {
+//       axios.get('https://www.youtube.com/watch?v=-3lqUHeZs_0')
+//       .then(response => 
+//         {
+//           const html = response.data
+//             const $ = cheerio.load(html)
+//             $('.style-scope ytd-watch-metadata')
+//         }
+        
+//         )
+//       .then(response => response.json())
+//       .then(res => setTitulos (res)) 
+//     }, [])
+
+//   return (
+//     <div>
+//       <h1>lista de usuarios</h1>
+//       <List>
+//         {
+//         titulos.map((user: any) => (
+//           <ListItem key={user.id}>
+//             <ListItemText primary={user.username} />
+//           </ListItem>))
+//         }
+
+//       </List>
+//     </div>
+//   )
+// }
+
+// export default App
